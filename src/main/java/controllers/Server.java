@@ -1,3 +1,5 @@
+package controllers;
+
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
@@ -17,11 +19,11 @@ public class Server{
 
 	int count = 1;	
 	ArrayList<ClientThread> clients = new ArrayList<ClientThread>();
-	TheServer server;
+	public TheServer server;
 	private Consumer<Serializable> callback;
 	
 	
-	Server(Consumer<Serializable> call){
+	public Server(Consumer<Serializable> call){
 	
 		callback = call;
 		server = new TheServer();
@@ -34,7 +36,7 @@ public class Server{
 		public void run() {
 		
 			try(ServerSocket mysocket = new ServerSocket(5555);){
-		    System.out.println("Server is waiting for a client!");
+		    System.out.println("controllers.Server is waiting for a client!");
 		  
 			
 		    while(true) {
@@ -49,7 +51,7 @@ public class Server{
 			    }
 			}//end of try
 				catch(Exception e) {
-					callback.accept("Server socket did not launch");
+					callback.accept("controllers.Server socket did not launch");
 				}
 			}//end of while
 		}
@@ -100,7 +102,7 @@ public class Server{
 					    	}
 					    catch(Exception e) {
 					    	callback.accept("OOOOPPs...Something wrong with the socket from client: " + count + "....closing down!");
-					    	updateClients("Client #"+count+" has left the server!");
+					    	updateClients("controllers.Client #"+count+" has left the server!");
 					    	clients.remove(this);
 					    	break;
 					    }
