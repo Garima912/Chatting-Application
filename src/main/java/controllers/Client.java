@@ -65,16 +65,6 @@ public class Client extends Thread {
 		}
 	}
 
-//	@Override
-//	public void start(Stage primaryStage) throws Exception {
-//		primaryStage.setScene(new Scene(parent, 500,500));
-//		if(parent == null){
-//			System.out.println("null");
-//		}
-//		else{
-//			System.out.println(" parent not null");
-//		}
-//	}
 
 
 }
