@@ -1,18 +1,14 @@
 package applications;
 
-import java.util.HashMap;
-
-import controllers.Client;
 import controllers.GUIController;
-import controllers.Server;
 import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
@@ -29,11 +25,17 @@ public class GuiServer extends Application{
 	public void start(Stage primaryStage) throws Exception {
 
 		this.primaryStage = primaryStage;
-		Parent parent = FXMLLoader.load(getClass().getResource("/fxml/introSceneGUI.fxml"));
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/introSceneGUI.fxml"));
+		BorderPane serverParent = FXMLLoader.load (getClass().getResource("/fxml/serverGUI.fxml"));
+		HBox clientParent = FXMLLoader.load (getClass().getResource("/fxml/clientGUI.fxml"));
+
+		Parent parent = loader.load();
 		Scene introScene = new Scene(parent,600, 600);
 
+		GUIController guiController = loader.getController();
+		guiController.initialize(primaryStage, serverParent, clientParent);
+
 		primaryStage.setTitle("The Networked Client/Server GUI Example");
-		GUIController controller = new GUIController(primaryStage);
 		primaryStage.setScene(introScene);
 		primaryStage.show();
 
