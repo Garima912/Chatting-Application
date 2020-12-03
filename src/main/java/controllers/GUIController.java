@@ -47,7 +47,6 @@ public class GUIController implements EventHandler {
     public ListView listItems;
     Server serverConnection;
     HashMap<String, Scene> sceneMap;
-
     Stage primaryStage;
 
     public GUIController(Stage primaryStage) throws IOException {
@@ -73,7 +72,6 @@ public class GUIController implements EventHandler {
 
             });
         }
-
         if(event.getSource().equals(clientBtn)){
             primaryStage.setScene(sceneMap.get("client"));
             primaryStage.setTitle("This is a client");
@@ -86,6 +84,5 @@ public class GUIController implements EventHandler {
         }
 
     }
-
 
 }
