@@ -26,14 +26,12 @@ public class GuiServer extends Application{
 
 		this.primaryStage = primaryStage;
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/introSceneGUI.fxml"));
-		BorderPane serverParent = FXMLLoader.load (getClass().getResource("/fxml/serverGUI.fxml"));
-		HBox clientParent = FXMLLoader.load (getClass().getResource("/fxml/clientGUI.fxml"));
 
 		Parent parent = loader.load();
 		Scene introScene = new Scene(parent,600, 600);
 
 		GUIController guiController = loader.getController();
-		guiController.initialize(primaryStage, serverParent, clientParent);
+		guiController.initialize(primaryStage);
 
 		primaryStage.setTitle("The Networked Client/Server GUI Example");
 		primaryStage.setScene(introScene);

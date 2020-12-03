@@ -1,4 +1,4 @@
-package controllers;
+package helpers;
 
 import com.sun.xml.internal.ws.api.message.Packet;
 import javafx.application.Application;
@@ -7,6 +7,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
+import model.ClientPacket;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -19,16 +20,14 @@ import java.util.function.Consumer;
 
 
 public class Client extends Thread {
-	@FXML HBox parent;
-	public ChoiceBox recipientsBox;
 
 	Socket socketClient;
-	
 	ObjectOutputStream out;
 	ObjectInputStream in;
 	
 	private Consumer<Serializable> callback;
-	
+	private ClientPacket packet;
+
 	public Client(Consumer<Serializable> call){
 		callback = call;
 	}
@@ -47,12 +46,11 @@ public class Client extends Thread {
 		while(true) {
 			 
 			try {
-			String message = in.readObject().toString();
+			String message =  in.readObject().toString();
 			callback.accept(message);
 			}
 			catch(Exception e) {}
 		}
-	
     }
 	
 	public void send(String data) {

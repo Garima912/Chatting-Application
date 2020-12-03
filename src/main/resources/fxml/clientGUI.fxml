@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<HBox fx:id="parent" prefHeight="400.0" prefWidth="600.0" spacing="10.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.Client">
+<HBox fx:id="parent" prefHeight="400.0" prefWidth="600.0" spacing="10.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ClientController">
    <children>
       <VBox fx:id="chatBox" prefHeight="400.0" prefWidth="451.0" spacing="25.0">
          <children>
@@ -14,14 +14,14 @@
                   <Font name="System Italic" size="14.0" />
                </font>
             </Text>
-            <ChoiceBox fx:id="recipientsBox" prefWidth="150.0" />
+            <ComboBox fx:id="recipientsBox" onAction="#handle" prefWidth="150.0" promptText="Choose recipients" />
             <ListView fx:id="clientChatList" prefHeight="200.0" prefWidth="200.0">
                <VBox.margin>
                   <Insets left="10.0" right="10.0" />
                </VBox.margin>
             </ListView>
-            <TextField fx:id="messageTxt" prefHeight="30.0" prefWidth="100.0" />
-            <Button fx:id="sendBtn" mnemonicParsing="false" text="Send">
+            <TextField fx:id="messageTxt" onAction="#handle" prefHeight="30.0" prefWidth="100.0" />
+            <Button fx:id="sendBtn" mnemonicParsing="false" onAction="#handle" text="Send">
                <font>
                   <Font size="14.0" />
                </font></Button>
