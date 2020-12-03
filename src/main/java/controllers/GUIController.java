@@ -14,6 +14,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
@@ -21,11 +22,11 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.ResourceBundle;
+import java.util.concurrent.Executors;
 
 public class GUIController implements EventHandler {
 
     //intro scene GUI elements
-	public HBox container;
 	public Button serverBtn;
 	public Button clientBtn;
 
@@ -47,25 +48,31 @@ public class GUIController implements EventHandler {
     public ListView listItems;
     Server serverConnection;
     HashMap<String, Scene> sceneMap;
-
     Stage primaryStage;
 
-    public GUIController(Stage primaryStage) throws IOException {
+    public void initialize(Stage primaryStage, BorderPane serverParent, HBox clientParent){
         this.primaryStage = primaryStage;
-        Parent serverParent = FXMLLoader.load(getClass().getResource("/fxml/serverGUI.fxml"));
-        Scene serverScene = new Scene(serverParent,600, 600);
-        Parent clientParent = FXMLLoader.load(getClass().getResource("/fxml/clientGUI.fxml"));
-        Scene clientScene = new Scene(clientParent,600, 600);
-        sceneMap.put("server",  serverScene);
-        sceneMap.put("client",  clientScene);
+        System.out.println("Got the primary stage");
+
+        if (this.primaryStage == null){
+            System.out.println("primary stage is null");
+        }
+        else{
+            System.out.println("Primary stage is not null");
+        }
+
     }
 
     @Override
     public void handle(Event event) {
 
         if(event.getSource().equals(serverBtn)){
-            primaryStage.setScene(sceneMap.get("server"));
-            primaryStage.setTitle("This is the Server");
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/serverGUI.fxml"));
+                Parent parent = loader.load();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             serverConnection = new Server(data -> {
                 Platform.runLater(()->{
                     listItems.getItems().add(data.toString());
@@ -75,8 +82,6 @@ public class GUIController implements EventHandler {
         }
 
         if(event.getSource().equals(clientBtn)){
-            primaryStage.setScene(sceneMap.get("client"));
-            primaryStage.setTitle("This is a client");
             clientConnection = new Client(data->{
                 Platform.runLater(()->{clientChatList.getItems().add(data.toString());
                 });
