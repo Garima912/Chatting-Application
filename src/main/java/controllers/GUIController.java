@@ -64,7 +64,6 @@ public class GUIController implements EventHandler {
     public void handle(Event event) {
 
         if(event.getSource().equals(serverBtn)){
-
             primaryStage.setScene(sceneMap.get("server"));
             primaryStage.setTitle("This is the Server");
             serverConnection = new Server(data -> {
