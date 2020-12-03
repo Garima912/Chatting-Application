@@ -1,15 +1,27 @@
+package controllers;
+
+import com.sun.xml.internal.ws.api.message.Packet;
+import javafx.application.Application;
+import javafx.fxml.FXML;
+import javafx.scene.Scene;
+import javafx.scene.control.ChoiceBox;
+import javafx.scene.layout.HBox;
+import javafx.stage.Stage;
+
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.net.Socket;
+import java.util.concurrent.Callable;
 import java.util.function.Consumer;
 
 
 
-public class Client extends Thread{
+public class Client extends Thread {
+	@FXML HBox parent;
+	public ChoiceBox recipientsBox;
 
-	
 	Socket socketClient;
 	
 	ObjectOutputStream out;
@@ -17,11 +29,11 @@ public class Client extends Thread{
 	
 	private Consumer<Serializable> callback;
 	
-	Client(Consumer<Serializable> call){
-	
+	public Client(Consumer<Serializable> call){
 		callback = call;
 	}
-	
+
+	@Override
 	public void run() {
 		
 		try {
@@ -52,6 +64,17 @@ public class Client extends Thread{
 			e.printStackTrace();
 		}
 	}
+
+//	@Override
+//	public void start(Stage primaryStage) throws Exception {
+//		primaryStage.setScene(new Scene(parent, 500,500));
+//		if(parent == null){
+//			System.out.println("null");
+//		}
+//		else{
+//			System.out.println(" parent not null");
+//		}
+//	}
 
 
 }
