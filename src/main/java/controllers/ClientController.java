@@ -11,6 +11,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import model.ClientPacket;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -30,14 +31,21 @@ public class ClientController implements Initializable, EventHandler {
     Client clientConnection;
     ObservableList<String> recipientChoices = FXCollections.observableArrayList();
     ObservableList<Integer> availableClients = FXCollections.observableArrayList();
-
+    ClientPacket packet;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        onlineClientsList.getItems().clear();
+        recipientChoices.clear();
         clientConnection = new Client(data->{
-
             Platform.runLater(()->{clientChatList.getItems().add(data.toString());
                 System.out.println(data.toString()); });
+
+        }, list->{
+            Platform.runLater(()->{
+                recipientChoices.add("Client " + String.valueOf(list));
+                onlineClientsList.getItems().add("Client " + String.valueOf(list));
+                System.out.println("online: " +String.valueOf(list)); });
 
         });
 

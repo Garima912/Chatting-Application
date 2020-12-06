@@ -26,10 +26,12 @@ public class Client extends Thread {
 	ObjectInputStream in;
 	
 	private Consumer<Serializable> callback;
+	private Consumer<Serializable> callback2;
 	private ClientPacket packet;
 
-	public Client(Consumer<Serializable> call){
+	public Client(Consumer<Serializable> call, Consumer<Serializable> call2){
 		callback = call;
+		callback2 = call2;
 	}
 
 	@Override
@@ -46,8 +48,12 @@ public class Client extends Thread {
 		while(true) {
 			 
 			try {
-			String message =  in.readObject().toString();
-			callback.accept(message);
+				packet = (ClientPacket) in.readObject();
+			callback.accept(packet.getMessage());
+				System.out.println("msg: "+ packet.getMessage());
+			for(int x: packet.getClientIds()){
+				callback2.accept(x);
+			}
 			}
 			catch(Exception e) {}
 		}

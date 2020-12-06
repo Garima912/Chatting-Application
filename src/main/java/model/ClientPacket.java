@@ -5,22 +5,23 @@ import javafx.collections.ObservableList;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 public class ClientPacket implements Serializable {
 
-    private ObservableList<Integer> clientIds =  FXCollections.observableArrayList(); // will contain list of online client IDs
+    private Set<Integer> clientIds =  new HashSet<>(); // will contain list of online client IDs
     private String message = "";
     private String ipAddress = "";
     private Boolean sendToAll = true;
 
-    public ObservableList<Integer> getClientIds() {
+    public Set<Integer> getClientIds() {
         return clientIds;
     }
 
-    public void setClientIds(ObservableList<Integer>  clientIds) {
+    public void setClientIds(Set<Integer> clientIds) {
         this.clientIds = clientIds;
     }
-
     public String getMessage() {
         return message;
     }
