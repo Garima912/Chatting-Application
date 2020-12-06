@@ -28,11 +28,9 @@ public class ClientController implements Initializable, EventHandler {
     public MenuButton recipientMenu;
     Client clientConnection;
     public HashSet<Integer> sendTo =  new HashSet<>();  // contains the list of selected recipients
-
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         addRecipientToMenu("All");
-
         clientConnection = new Client(data->{
             Platform.runLater(()->{clientChatList.getItems().add(data.toString());
                 System.out.println(data.toString()); });
@@ -41,17 +39,14 @@ public class ClientController implements Initializable, EventHandler {
             Platform.runLater(()->{
                 onlineClientsList.getItems().add("Client " + list.toString());
                 addRecipientToMenu("Client " + list.toString());
-
             });
 
         }, this);
-
         clientConnection.start();
     }
 
     @Override
     public void handle(Event event) {
-
         if(event.getSource().equals(sendBtn)){
             System.out.println("send to: " + sendTo);
             System.out.println("text sent");

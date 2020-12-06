@@ -76,6 +76,7 @@ public class Server{
 						try {
 							t.out.reset();
 							packet.setMessage(message);
+							packet.fromServer = true;
 							System.out.println("Update to: "+ packet.getMessage());
 							t.out.writeObject(packet);
 						} catch (Exception e) {
@@ -86,6 +87,12 @@ public class Server{
 			// this updates the chats list only
 			public synchronized void updateClientChats(int clientNumber, ClientPacket packet){
 				packet.setMessage("Client #"+clientNumber+" said: "+packet.getMessage());
+				System.out.print("CLients is ");
+				for (Integer x: packet.recipients){
+					System.out.print(x+" ");
+				}
+				System.out.println("");
+
 				for(int i = 0; i < clients.size(); i++) {
 					ClientThread t = clients.get(i);
 					try {
