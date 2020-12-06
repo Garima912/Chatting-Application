@@ -8,17 +8,23 @@ import java.util.ArrayList;
 
 public class ClientPacket implements Serializable {
 
-    private ObservableList<Integer> clientIds =  FXCollections.observableArrayList(); // will contain list of online client IDs
+    private ArrayList<Integer> clientIds =  new ArrayList<>(); // will contain list of online client IDs
     private String message = "";
     private String ipAddress = "";
-    private Boolean sendToAll = true;
+    private boolean sendToAll = true;
+    public boolean isMessage = true;
+    ArrayList<String> recipientsIPAddresses;
 
-    public ObservableList<Integer> getClientIds() {
+    public ClientPacket() {
+        recipientsIPAddresses = new ArrayList<>();
+    }
+
+    public ArrayList<Integer> getClientIds() {
         return clientIds;
     }
 
     public void setClientIds(ObservableList<Integer>  clientIds) {
-        this.clientIds = clientIds;
+        this.clientIds = new ArrayList<>(clientIds);
     }
 
     public String getMessage() {
@@ -43,6 +49,13 @@ public class ClientPacket implements Serializable {
 
     public void setSendToAll(Boolean sendToAll) {
         this.sendToAll = sendToAll;
+    }
+
+    public void addRecipient(String ipAddress){
+        recipientsIPAddresses.add(ipAddress);
+    }
+    public ArrayList getRecipientAddresses(){
+        return recipientsIPAddresses;
     }
 
 }

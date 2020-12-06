@@ -24,7 +24,7 @@ public class Client extends Thread {
 	Socket socketClient;
 	ObjectOutputStream out;
 	ObjectInputStream in;
-	
+
 	private Consumer<Serializable> callback;
 	private ClientPacket packet;
 
@@ -34,29 +34,39 @@ public class Client extends Thread {
 
 	@Override
 	public void run() {
-		
+
 		try {
-		socketClient= new Socket("127.0.0.1",5555);
-	    out = new ObjectOutputStream(socketClient.getOutputStream());
-	    in = new ObjectInputStream(socketClient.getInputStream());
-	    socketClient.setTcpNoDelay(true);
+			socketClient= new Socket("127.0.0.1",5555);
+			out = new ObjectOutputStream(socketClient.getOutputStream());
+			in = new ObjectInputStream(socketClient.getInputStream());
+			socketClient.setTcpNoDelay(true);
 		}
 		catch(Exception e) {}
-		
+
 		while(true) {
-			 
+
 			try {
-			String message =  in.readObject().toString();
-			callback.accept(message);
+				System.out.println("stuff here");
+				ClientPacket clientPacket = (ClientPacket) in.readObject();
+				System.out.println("size is "+ clientPacket.getClientIds().size());
+
+				callback.accept(clientPacket);
 			}
-			catch(Exception e) {}
+			catch(Exception e) {
+				System.out.println("error");
+				e.printStackTrace();
+				System.exit(1);
+			}
 		}
-    }
-	
+	}
+
 	public void send(String data) {
-		
+
+		ClientPacket packet = new ClientPacket();
+		packet.setMessage(data);
 		try {
-			out.writeObject(data);
+			System.out.println("object written");
+			out.writeObject(packet);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

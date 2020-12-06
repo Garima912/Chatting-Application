@@ -11,6 +11,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import model.ClientPacket;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -36,8 +37,15 @@ public class ClientController implements Initializable, EventHandler {
     public void initialize(URL location, ResourceBundle resources) {
         clientConnection = new Client(data->{
 
-            Platform.runLater(()->{clientChatList.getItems().add(data.toString());
-                System.out.println(data.toString()); });
+//            Platform.runLater(()->{clientChatList.getItems().add(data.toString());
+//                System.out.println(data.toString()); });
+
+            Platform.runLater(()->{
+                ClientPacket clientPacket = (ClientPacket) data;
+                onlineClientsList.getItems().addAll(clientPacket);
+                System.out.println("Here it is: "+clientPacket.getIpAddress());
+            });
+
 
         });
 

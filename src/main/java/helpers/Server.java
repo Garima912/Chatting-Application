@@ -47,6 +47,11 @@ public class Server{
 				ClientThread c = new ClientThread(mysocket.accept(), count);
 				clientIds.add(count);
 				packet.setClientIds(clientIds);
+				System.out.println("All clients are:: ");
+				for (Integer val: clientIds){
+					System.out.println("Value is "+ val);
+				}
+
 				callback.accept("client has connected to server: " + "client #" + count);
 				clients.add(c);
 				c.start();
@@ -81,8 +86,8 @@ public class Server{
 					ClientThread t = clients.get(i);
 					try {
 						packet.setMessage(message);
-						//packet.setClientIds(clientIds);
-					 t.out.writeObject(packet.getMessage());
+						packet.setClientIds(clientIds);
+					 t.out.writeObject(packet);
 					}
 					catch(Exception e) {}
 				}
@@ -100,8 +105,9 @@ public class Server{
 				}
 
 				clientIds.add(count);
+				packet.isMessage = true;
 				packet.setClientIds(clientIds);
-				updateClients("new client on server: client #"+count);
+				updateClients("client #"+count);
 
 				 while(true) {
 					    try {
