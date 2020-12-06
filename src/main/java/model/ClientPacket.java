@@ -2,16 +2,22 @@ package model;
 
 import java.io.Serializable;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 
 public class ClientPacket implements Serializable {
 
-    private HashMap<Integer, String> clientIdAndIp =  new HashMap<>(); // will contain list of online client IDs
+    private Set<Integer> clientIds =  new HashSet<Integer>(); // will contain list of online client IDs
     private String message = "";
     private String ipAddress = "";
-    private Boolean sendToAll = true;
+    private Boolean sendToAll = false;
 
-    public HashMap<Integer, String> getClientIdAndIp() {
-        return clientIdAndIp;
+    public void setClientIds(Set<Integer> clientIds) {
+        this.clientIds = clientIds;
+    }
+
+    public Set<Integer> getClientIds() {
+        return clientIds;
     }
 
     public String getMessage() {

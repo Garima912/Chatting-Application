@@ -6,8 +6,6 @@ import java.io.Serializable;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.function.Consumer;
 
 import model.ClientPacket;
@@ -42,11 +40,11 @@ public class Server{
 		    while(true) {
 		
 				ClientThread c = new ClientThread(mysocket.accept(), count);
-				packet.getClientIdAndIp().put(count, "");
+				packet.getClientIds().add(count);
 				callback.accept("client has connected to server: " + "client #" + count);
 				clients.add(c);
 				c.start();
-				System.out.println("Clients: " + packet.getClientIdAndIp().keySet());
+				System.out.println("Clients: " + clients.size());
 				count++;
 				
 			    }
@@ -60,7 +58,6 @@ public class Server{
 	
 
 		class ClientThread extends Thread{
-			
 		
 			Socket connection;
 			int count;
@@ -73,13 +70,16 @@ public class Server{
 			}
 			
 			public void updateClients(String message) {
+
 				for(int i = 0; i < clients.size(); i++) {
 					ClientThread t = clients.get(i);
-					try {
-						packet.setMessage(message);
-					 t.out.writeObject(packet);
-					}
-					catch(Exception e) {}
+						try {
+							t.out.reset();
+							packet.setMessage(message);
+							System.out.println("Update to: "+ packet.getMessage());
+							t.out.writeObject(packet);
+						} catch (Exception e) {
+						}
 				}
 			}
 			
@@ -93,11 +93,10 @@ public class Server{
 				catch(Exception e) {
 					System.out.println("Streams not open");
 				}
-
-				packet.getClientIdAndIp().put(count, "");
-				updateClients("new client on server: client #"+count);
+				updateClients("new client on server: client #"+ count);
 
 				 while(true) {
+
 					    try {
 					    	packet = (ClientPacket) in.readObject();
 					    	callback.accept("client: " + count + " sent: " + packet.getMessage());
@@ -105,9 +104,11 @@ public class Server{
 					    	}
 					    catch(Exception e) {
 					    	callback.accept("OOOOPPs...Something wrong with the socket from client: " + count + "....closing down!");
-							packet.getClientIdAndIp().remove(count);
+							packet.getClientIds().remove(count);
+							clients.remove(this);
+							System.out.println("ONLINE after removing size: " + packet.getClientIds().size());
 					    	updateClients("Client #"+count+" has left the server!");
-					    	clients.remove(this);
+							System.out.println("CLIENTS after removing size: " + clients.size());
 					    	break;
 					    }
 					}
