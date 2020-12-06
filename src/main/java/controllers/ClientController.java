@@ -62,7 +62,6 @@ public class ClientController implements Initializable, EventHandler {
 
     @Override
     public void handle(Event event) {
-
         if(event.getSource().equals(sendBtn)){
             System.out.println("text sent");
             clientConnection.send(messageTxt.getText()); messageTxt.clear();

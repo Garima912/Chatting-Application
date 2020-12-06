@@ -1,27 +1,27 @@
 package model;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-
 import java.io.Serializable;
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
 public class ClientPacket implements Serializable {
 
-    private Set<Integer> clientIds =  new HashSet<>(); // will contain list of online client IDs
+//    private Set<Integer> clientIds =  new HashSet<>(); // will contain list of online client IDs
+
+    private HashMap<Integer, String> clientIdAndIp = new HashMap<>();
+
     private String message = "";
     private String ipAddress = "";
-    private Boolean sendToAll = true;
+    private boolean sendToAll = true;
+    public boolean isMessage = false;
+    public boolean isNewClient = true;
+    public int positionInServer = 0;
 
-    public Set<Integer> getClientIds() {
-        return clientIds;
+    public HashMap<Integer, String> getClientIdAndIp() {
+        return clientIdAndIp;
     }
 
-    public void setClientIds(Set<Integer> clientIds) {
-        this.clientIds = clientIds;
-    }
     public String getMessage() {
         return message;
     }
@@ -45,5 +45,11 @@ public class ClientPacket implements Serializable {
     public void setSendToAll(Boolean sendToAll) {
         this.sendToAll = sendToAll;
     }
+
+    public void addRecipient(String ipAddress) {
+        this.recipients.add(ipAddress);
+    }
+
+    private Set<String> recipients = new HashSet<>();  // the client recipients of this packet
 
 }

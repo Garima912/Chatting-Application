@@ -6,6 +6,7 @@ import java.io.Serializable;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Consumer;
@@ -26,7 +27,7 @@ public class Server{
 	ArrayList<ClientThread> clients = new ArrayList<ClientThread>();
 	public TheServer server;
 	private Consumer<Serializable> callback;
-	Set<Integer> clientIds =  new HashSet<>();
+//	HashMap<Integer> clientIds =  new HashSet<>();
 	ClientPacket packet = new ClientPacket();
 	
 	public Server(Consumer<Serializable> call){
@@ -45,10 +46,11 @@ public class Server{
 		  
 			
 		    while(true) {
-		
+		    	// new client just connected. send a packet to the client, containing its position
 				ClientThread c = new ClientThread(mysocket.accept(), count);
 				clientIds.add(count);
 				packet.setClientIds(clientIds);
+				packet.getClientIdAndIp().put(count,)
 				System.out.println("All clients are:: ");
 				for (Integer val: clientIds){
 					System.out.println("Value is "+ val);
@@ -71,8 +73,6 @@ public class Server{
 	
 
 		class ClientThread extends Thread{
-			
-		
 			Socket connection;
 			int count;
 			ObjectInputStream in;
