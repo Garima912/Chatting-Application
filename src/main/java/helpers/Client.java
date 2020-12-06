@@ -19,6 +19,7 @@ public class Client extends Thread {
 	Socket socketClient;
 	ObjectOutputStream out;
 	ObjectInputStream in;
+	public int position = -1;
 	
 	private Consumer<Serializable> callback;
 	private Consumer<Serializable> callback2;
@@ -33,7 +34,6 @@ public class Client extends Thread {
 
 	@Override
 	public void run() {
-		
 		try {
 		socketClient= new Socket("127.0.0.1",5555);
 	    out = new ObjectOutputStream(socketClient.getOutputStream());
@@ -46,6 +46,8 @@ public class Client extends Thread {
 			 
 			try {
 				packet = (ClientPacket) in.readObject();
+				if (position < 0)  position = packet.getClientIds().size();
+
 				if (!packet.fromServer){
 					System.out.println("not from server, ignoring");
 					continue;
@@ -76,6 +78,7 @@ public class Client extends Thread {
 
 	public void send(String data, HashSet<Integer> sendTo) {
 		/* The idea of this function is to send msg to server, then server will decide (based on packet), which clients will recieve it*/
+		sendTo.add(position-1);		// always add current client to list of recipients
 		packet.recipients = sendTo;
 		if(sendTo.contains(-1) ){	//Note -1 is "All"
 			packet.setSendToAll(true);
