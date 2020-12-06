@@ -6,15 +6,10 @@ import java.io.Serializable;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Consumer;
 
-import javafx.application.Platform;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.scene.control.ListView;
 import model.ClientPacket;
 /*
  * Clicker: A: I really get it    B: No idea what you are talking about
@@ -27,9 +22,8 @@ public class Server{
 	ArrayList<ClientThread> clients = new ArrayList<ClientThread>();
 	public TheServer server;
 	private Consumer<Serializable> callback;
-//	HashMap<Integer> clientIds =  new HashSet<>();
 	ClientPacket packet = new ClientPacket();
-	
+
 	public Server(Consumer<Serializable> call){
 		callback = call;
 		server = new TheServer();
@@ -46,20 +40,13 @@ public class Server{
 		  
 			
 		    while(true) {
-		    	// new client just connected. send a packet to the client, containing its position
+		
 				ClientThread c = new ClientThread(mysocket.accept(), count);
-				clientIds.add(count);
-				packet.setClientIds(clientIds);
-				packet.getClientIdAndIp().put(count,)
-				System.out.println("All clients are:: ");
-				for (Integer val: clientIds){
-					System.out.println("Value is "+ val);
-				}
-
+				packet.getClientIdAndIp().put(count, "");
 				callback.accept("client has connected to server: " + "client #" + count);
 				clients.add(c);
 				c.start();
-				System.out.println("Clients: " + clientIds);
+				System.out.println("Clients: " + packet.getClientIdAndIp().keySet());
 				count++;
 				
 			    }
@@ -73,6 +60,8 @@ public class Server{
 	
 
 		class ClientThread extends Thread{
+			
+		
 			Socket connection;
 			int count;
 			ObjectInputStream in;
@@ -88,7 +77,6 @@ public class Server{
 					ClientThread t = clients.get(i);
 					try {
 						packet.setMessage(message);
-						packet.setClientIds(clientIds);
 					 t.out.writeObject(packet);
 					}
 					catch(Exception e) {}
@@ -106,22 +94,18 @@ public class Server{
 					System.out.println("Streams not open");
 				}
 
-				clientIds.add(count);
-				packet.isMessage = true;
-				packet.setClientIds(clientIds);
-				updateClients("client #"+count);
+				packet.getClientIdAndIp().put(count, "");
+				updateClients("new client on server: client #"+count);
 
 				 while(true) {
 					    try {
-					    	String data = in.readObject().toString();
-					    	callback.accept("client: " + count + " sent: " + data);
-					    	updateClients("client #"+count+" said: "+data);
-
+					    	packet = (ClientPacket) in.readObject();
+					    	callback.accept("client: " + count + " sent: " + packet.getMessage());
+					    	updateClients("client #"+count+" said: "+ packet.getMessage());
 					    	}
 					    catch(Exception e) {
 					    	callback.accept("OOOOPPs...Something wrong with the socket from client: " + count + "....closing down!");
-							clientIds.remove(count);
-							packet.setClientIds(clientIds);
+							packet.getClientIdAndIp().remove(count);
 					    	updateClients("Client #"+count+" has left the server!");
 					    	clients.remove(this);
 					    	break;

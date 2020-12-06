@@ -41,21 +41,11 @@ public class Client extends Thread {
 			 
 			try {
 				packet = (ClientPacket) in.readObject();
-				// first time they connect. no IP yet
-				if (packet.isNewClient){
-					callback.accept(packet.getMessage());
-					System.out.println("msg: "+ packet.getMessage());
-//					for(int x: packet.getClientIdAndIp()){
-//						callback2.accept(x);
-//					}
-
-					packet.setIpAddress(socketClient.getRemoteSocketAddress().toString());
-					System.out.println("Inside client: Ip address is "+packet.getIpAddress());
-					out.writeObject(packet);
-				}
-				else{
-
-				}
+			callback.accept(packet.getMessage());
+				System.out.println("msg: "+ packet.getMessage());
+			for(int x: packet.getClientIdAndIp().keySet()){
+				callback2.accept(x);
+			}
 			}
 			catch(Exception e) {}
 		}
