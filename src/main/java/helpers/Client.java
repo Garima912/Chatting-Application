@@ -9,9 +9,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.net.Socket;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Set;
 import java.util.function.Consumer;
 
 
@@ -48,6 +46,10 @@ public class Client extends Thread {
 			 
 			try {
 				packet = (ClientPacket) in.readObject();
+				if (!packet.fromServer){
+					System.out.println("not from server, ignoring");
+					continue;
+				}
 				callback.accept(packet.getMessage());
 				System.out.println("Online client ::::" + packet.getClientIds());
 				refreshLists();
@@ -65,20 +67,28 @@ public class Client extends Thread {
 		Platform.runLater(
 				() -> {
 					clientController.onlineClientsList.getItems().clear();
-					clientController.recipientChoices.clear();
-					clientController.recipientsBox.getItems().clear();
-					clientController.recipientsBox.getItems().add("All");
+					clientController.recipientMenu.getItems().clear();
+					clientController.addRecipientToMenu("All");
+					clientController.sendTo.clear();
 				}
 		);
 	}
 
-	public void send(String data, ArrayList<Integer> sendTo) {
-		if(sendTo.equals(clientController.recipientChoices) || sendTo.contains("All") ){
+	public void send(String data, HashSet<Integer> sendTo) {
+		/* The idea of this function is to send msg to server, then server will decide (based on packet), which clients will recieve it*/
+		packet.recipients = sendTo;
+		if(sendTo.contains(-1) ){	//Note -1 is "All"
 			packet.setSendToAll(true);
 		}
+		else{
+			packet.setSendToAll(false);
+		}
+
 		try {
 			packet.setMessage(data);
+			packet.fromServer = false;
 			out.writeObject(packet);
+			out.reset();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

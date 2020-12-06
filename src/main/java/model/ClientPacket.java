@@ -10,7 +10,9 @@ public class ClientPacket implements Serializable {
     private Set<Integer> clientIds =  new HashSet<Integer>(); // will contain list of online client IDs
     private String message = "";
     private String ipAddress = "";
-    private Boolean sendToAll = false;
+    private boolean sendToAll = false;
+    public boolean fromServer = true;       // if server is sending the packet
+    public HashSet<Integer> recipients = new HashSet<>();
 
     public void setClientIds(Set<Integer> clientIds) {
         this.clientIds = clientIds;
@@ -26,14 +28,6 @@ public class ClientPacket implements Serializable {
 
     public void setMessage(String message) {
         this.message = message;
-    }
-
-    public String getIpAddress() {
-        return ipAddress;
-    }
-
-    public void setIpAddress(String ipAddress) {
-        this.ipAddress = ipAddress;
     }
 
     public Boolean getSendToAll() {

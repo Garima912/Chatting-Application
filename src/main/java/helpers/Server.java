@@ -6,6 +6,7 @@ import java.io.Serializable;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.function.Consumer;
 
 import model.ClientPacket;
@@ -69,8 +70,7 @@ public class Server{
 				this.count = count;	
 			}
 			
-			public void updateClients(String message) {
-
+			public synchronized void updateClients(String message) {
 				for(int i = 0; i < clients.size(); i++) {
 					ClientThread t = clients.get(i);
 						try {
@@ -82,7 +82,26 @@ public class Server{
 						}
 				}
 			}
-			
+
+			// this updates the chats list only
+			public synchronized void updateClientChats(int clientNumber, ClientPacket packet){
+				packet.setMessage("Client #"+clientNumber+" said: "+packet.getMessage());
+				for(int i = 0; i < clients.size(); i++) {
+					ClientThread t = clients.get(i);
+					try {
+						t.out.reset();
+						System.out.println("Update to: "+ packet.getMessage());
+						// if 'i' is in the packet or 'All' is chosen
+						if (packet.recipients.contains(i) || packet.getSendToAll()){
+							System.out.println("Got here");
+							packet.fromServer = true;
+							t.out.writeObject(packet);
+						}
+					} catch (Exception e) {
+					}
+				}
+			}
+
 			public void run(){
 					
 				try {
@@ -98,9 +117,9 @@ public class Server{
 				 while(true) {
 
 					    try {
-					    	packet = (ClientPacket) in.readObject();
+					    	packet = (ClientPacket) in.readObject();		// packet from client. To be decided which other client to send to
 					    	callback.accept("client: " + count + " sent: " + packet.getMessage());
-					    	updateClients("client #"+count+" said: "+ packet.getMessage());
+					    	updateClientChats(count, packet);
 					    	}
 					    catch(Exception e) {
 					    	callback.accept("OOOOPPs...Something wrong with the socket from client: " + count + "....closing down!");
