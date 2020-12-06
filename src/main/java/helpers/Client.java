@@ -43,7 +43,7 @@ public class Client extends Thread {
 				packet = (ClientPacket) in.readObject();
 			callback.accept(packet.getMessage());
 				System.out.println("msg: "+ packet.getMessage());
-			for(int x: packet.getClientIdAndIp().keySet()){
+			for(int x: packet.getClientIds()){
 				callback2.accept(x);
 			}
 			}

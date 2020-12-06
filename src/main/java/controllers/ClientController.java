@@ -35,7 +35,6 @@ public class ClientController implements Initializable, EventHandler {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        onlineClientsList.getItems().clear();
         recipientChoices.clear();
         clientConnection = new Client(data->{
             Platform.runLater(()->{clientChatList.getItems().add(data.toString());
@@ -43,6 +42,7 @@ public class ClientController implements Initializable, EventHandler {
 
         }, list->{
             Platform.runLater(()->{
+                // fix clearing before adding
                 recipientChoices.add("Client " + String.valueOf(list));
                 onlineClientsList.getItems().add("Client " + String.valueOf(list));
                 System.out.println("online: " +String.valueOf(list)); });
