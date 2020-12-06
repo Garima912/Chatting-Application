@@ -55,7 +55,7 @@ public class ClientController implements Initializable, EventHandler {
         if(event.getSource().equals(sendBtn)){
             System.out.println("send to: " + sendTo);
             System.out.println("text sent");
-            clientConnection.send(messageTxt.getText(), sendTo);  //planning to pass the sendTo arrayList to client class
+            clientConnection.send(messageTxt.getText(), sendTo);  //pass the sendTo arrayList to client class
             messageTxt.clear();
         }
 
