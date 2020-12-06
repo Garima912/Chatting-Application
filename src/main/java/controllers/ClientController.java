@@ -4,6 +4,7 @@ import helpers.Client;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.ObservableSet;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.Initializable;
@@ -14,6 +15,7 @@ import javafx.scene.text.Text;
 import model.ClientPacket;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class ClientController implements Initializable, EventHandler {
@@ -29,42 +31,42 @@ public class ClientController implements Initializable, EventHandler {
     public ListView onlineClientsList;
     public ComboBox<String> recipientsBox;
     Client clientConnection;
-    ObservableList<String> recipientChoices = FXCollections.observableArrayList();
-    ObservableList<Integer> availableClients = FXCollections.observableArrayList();
-    ClientPacket packet;
+    public ObservableSet<String> recipientChoices = FXCollections.observableSet(); //list of choices for the ComboBox
+    ArrayList<Integer> sendTo =  new ArrayList<>();  // contains the list of selected recipients
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        recipientChoices.clear();
+
+        recipientChoices.add("All");
         clientConnection = new Client(data->{
             Platform.runLater(()->{clientChatList.getItems().add(data.toString());
                 System.out.println(data.toString()); });
 
         }, list->{
             Platform.runLater(()->{
-                // fix clearing before adding
-                recipientChoices.add("Client " + String.valueOf(list));
+                recipientChoices.add(String.valueOf(list));
                 onlineClientsList.getItems().add("Client " + String.valueOf(list));
-                System.out.println("online: " +String.valueOf(list)); });
+                recipientsBox.getItems().add("Client " + String.valueOf(list));
+                System.out.println("online: " +recipientChoices);
+            });
 
-        });
+        }, this);
 
         clientConnection.start();
-        updateRecipientsBox();
     }
-
-    // this method will update the available clients list (for online Clients listView) and the recipients list for the combobox
-    public void updateRecipientsBox() {
-        recipientChoices.add("All");
-         //TODO: get the clientIds from the packet and add to recipientsChoices ("Client " + clientIds(i) )
-        recipientsBox.setItems(recipientChoices);
-    }
-
+    // **** select the recipient in the GUI before sending, or else will get an error ****
     @Override
     public void handle(Event event) {
+
         if(event.getSource().equals(sendBtn)){
+
+            // for client 4 : char at 7 is '4'
+            // add 4 to the arrayList 'sendTo'
+            sendTo.add(Character.getNumericValue(recipientsBox.getValue().charAt(7))); // just checking for individual selection
+            System.out.println("send to: " + sendTo);
             System.out.println("text sent");
-            clientConnection.send(messageTxt.getText()); messageTxt.clear();
+            clientConnection.send(messageTxt.getText(), sendTo);  //planning to pass the sendTo arrayList to client class
+            messageTxt.clear();
         }
     }
 }
