@@ -6,6 +6,8 @@ import java.io.Serializable;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.function.Consumer;
 
 import javafx.application.Platform;
@@ -24,7 +26,7 @@ public class Server{
 	ArrayList<ClientThread> clients = new ArrayList<ClientThread>();
 	public TheServer server;
 	private Consumer<Serializable> callback;
-	ObservableList<Integer> clientIds =  FXCollections.observableArrayList();
+	Set<Integer> clientIds =  new HashSet<>();
 	ClientPacket packet = new ClientPacket();
 	
 	public Server(Consumer<Serializable> call){
@@ -55,7 +57,7 @@ public class Server{
 				callback.accept("client has connected to server: " + "client #" + count);
 				clients.add(c);
 				c.start();
-				
+				System.out.println("Clients: " + clientIds);
 				count++;
 				
 			    }

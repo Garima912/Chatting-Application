@@ -5,28 +5,23 @@ import javafx.collections.ObservableList;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 public class ClientPacket implements Serializable {
 
-    private ArrayList<Integer> clientIds =  new ArrayList<>(); // will contain list of online client IDs
+    private Set<Integer> clientIds =  new HashSet<>(); // will contain list of online client IDs
     private String message = "";
     private String ipAddress = "";
-    private boolean sendToAll = true;
-    public boolean isMessage = true;
-    ArrayList<String> recipientsIPAddresses;
+    private Boolean sendToAll = true;
 
-    public ClientPacket() {
-        recipientsIPAddresses = new ArrayList<>();
-    }
-
-    public ArrayList<Integer> getClientIds() {
+    public Set<Integer> getClientIds() {
         return clientIds;
     }
 
-    public void setClientIds(ObservableList<Integer>  clientIds) {
-        this.clientIds = new ArrayList<>(clientIds);
+    public void setClientIds(Set<Integer> clientIds) {
+        this.clientIds = clientIds;
     }
-
     public String getMessage() {
         return message;
     }
@@ -49,13 +44,6 @@ public class ClientPacket implements Serializable {
 
     public void setSendToAll(Boolean sendToAll) {
         this.sendToAll = sendToAll;
-    }
-
-    public void addRecipient(String ipAddress){
-        recipientsIPAddresses.add(ipAddress);
-    }
-    public ArrayList getRecipientAddresses(){
-        return recipientsIPAddresses;
     }
 
 }

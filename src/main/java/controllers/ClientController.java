@@ -31,21 +31,21 @@ public class ClientController implements Initializable, EventHandler {
     Client clientConnection;
     ObservableList<String> recipientChoices = FXCollections.observableArrayList();
     ObservableList<Integer> availableClients = FXCollections.observableArrayList();
-
+    ClientPacket packet;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        onlineClientsList.getItems().clear();
+        recipientChoices.clear();
         clientConnection = new Client(data->{
+            Platform.runLater(()->{clientChatList.getItems().add(data.toString());
+                System.out.println(data.toString()); });
 
-//            Platform.runLater(()->{clientChatList.getItems().add(data.toString());
-//                System.out.println(data.toString()); });
-
+        }, list->{
             Platform.runLater(()->{
-                ClientPacket clientPacket = (ClientPacket) data;
-                onlineClientsList.getItems().addAll(clientPacket);
-                System.out.println("Here it is: "+clientPacket.getIpAddress());
-            });
-
+                recipientChoices.add("Client " + String.valueOf(list));
+                onlineClientsList.getItems().add("Client " + String.valueOf(list));
+                System.out.println("online: " +String.valueOf(list)); });
 
         });
 
