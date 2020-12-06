@@ -1,12 +1,5 @@
 package helpers;
 
-import com.sun.xml.internal.ws.api.message.Packet;
-import javafx.application.Application;
-import javafx.fxml.FXML;
-import javafx.scene.Scene;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.layout.HBox;
-import javafx.stage.Stage;
 import model.ClientPacket;
 
 import java.io.IOException;
@@ -14,7 +7,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.net.Socket;
-import java.util.concurrent.Callable;
 import java.util.function.Consumer;
 
 
@@ -51,7 +43,7 @@ public class Client extends Thread {
 				packet = (ClientPacket) in.readObject();
 			callback.accept(packet.getMessage());
 				System.out.println("msg: "+ packet.getMessage());
-			for(int x: packet.getClientIds()){
+			for(int x: packet.getClientIdAndIp().keySet()){
 				callback2.accept(x);
 			}
 			}
@@ -62,7 +54,8 @@ public class Client extends Thread {
 	public void send(String data) {
 		
 		try {
-			out.writeObject(data);
+			packet.setMessage(data);
+			out.writeObject(packet);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
