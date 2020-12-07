@@ -1,45 +1,49 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ListView?>
-<?import javafx.scene.control.MenuButton?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
-<?import javafx.scene.text.Text?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<HBox fx:id="parent" prefHeight="400.0" prefWidth="600.0" spacing="10.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ClientController">
+<HBox fx:id="parent" prefHeight="400.0" prefWidth="600.0" spacing="10.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ClientController">
    <children>
       <VBox fx:id="chatBox" prefHeight="400.0" prefWidth="451.0" spacing="25.0">
          <children>
-            <Text fx:id="recipientsTxt" strokeType="OUTSIDE" strokeWidth="0.0" text="Select Recipients :" textAlignment="JUSTIFY">
+            <Text fx:id="recipientsTxt" strokeType="OUTSIDE" strokeWidth="0.0" text="Select Recipients :" textAlignment="JUSTIFY" underline="true">
                <font>
-                  <Font name="System Italic" size="14.0" />
+                  <Font name="System Italic" size="20.0" />
                </font>
+               <VBox.margin>
+                  <Insets left="15.0" />
+               </VBox.margin>
             </Text>
-            <MenuButton fx:id="recipientMenu" mnemonicParsing="false" text="Recipients" />
-            <ListView fx:id="clientChatList" prefHeight="200.0" prefWidth="200.0">
+            <MenuButton fx:id="recipientMenu" mnemonicParsing="false" prefHeight="40.0" prefWidth="120.0" text="Recipients">
+               <font>
+                  <Font size="15.0" />
+               </font>
+               <VBox.margin>
+                  <Insets left="15.0" />
+               </VBox.margin></MenuButton>
+            <ListView fx:id="clientChatList" prefHeight="260.0" prefWidth="200.0">
                <VBox.margin>
                   <Insets left="10.0" right="10.0" />
                </VBox.margin>
             </ListView>
-            <TextField fx:id="messageTxt" onAction="#handle" prefHeight="30.0" prefWidth="100.0" />
-            <Button fx:id="sendBtn" mnemonicParsing="false" onAction="#handle" text="Send">
+            <TextField fx:id="messageTxt" onAction="#handle" prefHeight="50.0" prefWidth="100.0" promptText="Enter message " />
+            <Button fx:id="sendBtn" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#handle" prefHeight="50.0" prefWidth="100.0" text="Send">
                <font>
-                  <Font size="14.0" />
+                  <Font size="18.0" />
                </font></Button>
          </children>
       </VBox>
       <VBox fx:id="clientsBox" prefHeight="200.0" prefWidth="100.0">
          <children>
-            <Text fx:id="clientListTxt" strokeType="OUTSIDE" strokeWidth="0.0" text="Online Clients :">
+            <Text fx:id="clientListTxt" strokeType="OUTSIDE" strokeWidth="0.0" text="Online Clients :" underline="true">
                <font>
-                  <Font size="14.0" />
+                  <Font name="System Italic" size="18.0" />
                </font>
             </Text>
-            <ListView fx:id="onlineClientsList" prefHeight="400.0" prefWidth="150.0" />
+            <ListView fx:id="onlineClientsList" prefHeight="435.0" prefWidth="160.0" />
          </children>
       </VBox>
    </children>

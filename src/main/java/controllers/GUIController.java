@@ -24,31 +24,24 @@ public class GUIController implements EventHandler {
 
     public void initialize(Stage primaryStage){
         this.primaryStage = primaryStage;
-        System.out.println("Got the primary stage");
-
-        if (this.primaryStage == null){
-            System.out.println("primary stage is null");
-        }
-        else{
-            System.out.println("Primary stage is not null");
-        }
-
     }
 
     @Override
     public void handle(Event event) {
 
-        if(event.getSource().equals(serverBtn)){
+        if(event.getSource().equals(serverBtn)){   // open server scene
             try {
                 System.out.println("server is chosen");
                 Parent pane = FXMLLoader.load(getClass().getResource("/fxml/serverGUI.fxml"));
-                primaryStage.setScene(new Scene(pane, 700,700));
+                Scene serverScene = new Scene(pane, 600,600);
+                serverScene.getStylesheets().add("/serverStyle.css");
+                primaryStage.setScene(serverScene);
                 primaryStage.setTitle("This is the Server");
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
-        if(event.getSource().equals(clientBtn)){
+        if(event.getSource().equals(clientBtn)){  // open client scene
             System.out.println("client is chosen");
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/clientGUI.fxml"));
             Parent parent = null;
@@ -57,7 +50,7 @@ public class GUIController implements EventHandler {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            primaryStage.setScene(new Scene(parent, 700,700));
+            primaryStage.setScene(new Scene(parent, 600,600));
             primaryStage.setTitle("This is the Client");
 
         }

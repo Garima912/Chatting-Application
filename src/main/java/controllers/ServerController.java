@@ -12,6 +12,7 @@ import model.ClientPacket;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+// This class updates the server GUI when new message is received
 public class ServerController implements Initializable {
 
     public BorderPane pane;

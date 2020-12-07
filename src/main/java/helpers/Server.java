@@ -10,10 +10,6 @@ import java.util.HashSet;
 import java.util.function.Consumer;
 
 import model.ClientPacket;
-/*
- * Clicker: A: I really get it    B: No idea what you are talking about
- * C: kind of following
- */
 
 public class Server{
 
@@ -36,12 +32,11 @@ public class Server{
 		
 			try(ServerSocket mysocket = new ServerSocket(5555);){
 		    System.out.println("Server is waiting for a client!");
-		  
-			
+
 		    while(true) {
 		
 				ClientThread c = new ClientThread(mysocket.accept(), count);
-				packet.getClientIds().add(count);
+				packet.getClientIds().add(count);  // add the new client in the online clients list
 				callback.accept("client has connected to server: " + "client #" + count);
 				clients.add(c);
 				c.start();
@@ -87,7 +82,7 @@ public class Server{
 			// this updates the chats list only
 			public synchronized void updateClientChats(int clientNumber, ClientPacket packet){
 				packet.setMessage("Client #"+clientNumber+" said: "+packet.getMessage());
-				System.out.print("CLients is ");
+				System.out.print("Clients is ");
 				for (Integer x: packet.recipients){
 					System.out.print(x+" ");
 				}
@@ -130,11 +125,9 @@ public class Server{
 					    	}
 					    catch(Exception e) {
 					    	callback.accept("OOOOPPs...Something wrong with the socket from client: " + count + "....closing down!");
-							packet.getClientIds().remove(count);
+							packet.getClientIds().remove(count);  // remove the client from online clients list
 							clients.remove(this);
-							System.out.println("ONLINE after removing size: " + packet.getClientIds().size());
 					    	updateClients("Client #"+count+" has left the server!");
-							System.out.println("CLIENTS after removing size: " + clients.size());
 					    	break;
 					    }
 					}

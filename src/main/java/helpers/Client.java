@@ -53,10 +53,9 @@ public class Client extends Thread {
 					continue;
 				}
 				callback.accept(packet.getMessage());
-				System.out.println("Online client ::::" + packet.getClientIds());
 				refreshLists();
 
-				for(int x: packet.getClientIds()){
+				for(int x: packet.getClientIds()){  // send each new online client one at a time to the controller
 					callback2.accept(x);
 				}
 			}

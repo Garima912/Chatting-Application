@@ -14,6 +14,7 @@ import java.net.URL;
 import java.util.HashSet;
 import java.util.ResourceBundle;
 
+// This class controls the Client User interfaces
 public class ClientController implements Initializable, EventHandler {
 
     public HBox parent;
@@ -28,15 +29,17 @@ public class ClientController implements Initializable, EventHandler {
     public MenuButton recipientMenu;
     Client clientConnection;
     public HashSet<Integer> sendTo =  new HashSet<>();  // contains the list of selected recipients
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         addRecipientToMenu("All");
-        clientConnection = new Client(data->{
+
+        clientConnection = new Client(data->{   // receive the message to display on user interface
             Platform.runLater(()->{clientChatList.getItems().add(data.toString());
                 System.out.println(data.toString()); });
 
         }, list->{
-            Platform.runLater(()->{
+            Platform.runLater(()->{            // recieve the list of online clients and display on GUI
                 onlineClientsList.getItems().add("Client " + list.toString());
                 addRecipientToMenu("Client " + list.toString());
             });
