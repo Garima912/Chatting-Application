@@ -12,7 +12,7 @@ import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
-public class GuiServer extends Application{
+public class Main extends Application{
 
 	Stage primaryStage;
 	public static void main(String[] args) {
@@ -20,7 +20,6 @@ public class GuiServer extends Application{
 		launch(args);
 	}
 
-	//feel free to remove the starter code from this method
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 
